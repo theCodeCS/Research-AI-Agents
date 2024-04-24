@@ -19,13 +19,14 @@ load_dotenv()
 
 
 class CustomCrew:
-    def __init__(self, topic, task):
+    def __init__(self, topic:str, task:str, openai:bool):
         self.topic = topic
         self.task = task
+        self.openai = openai
 
     def run(self):
         # Define your custom agents and tasks in agents.py and tasks.py
-        agents = CustomAgents(self.topic)
+        agents = CustomAgents(self.topic, self.openai)
         tasks = CustomTasks(self.task)
 
         # Define your custom agents and tasks here
@@ -60,10 +61,11 @@ class CustomCrew:
 if __name__ == "__main__":
     print("## Welcome to Crew AI Template")
     print("-------------------------------")
+    openai = True if input(dedent("""Which Model do you want to use? (openai/groq): """)) == "openai" else False
     topic = input(dedent("""What is the Topic you want me to Research about?: """))
     task = input(dedent("""Ask Me what you want me to find: """))
 
-    custom_crew = CustomCrew(topic, task)
+    custom_crew = CustomCrew(topic, task, openai)
     result = custom_crew.run()
     print("\n\n########################")
     print("## Here is you custom crew run result:")

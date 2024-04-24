@@ -8,17 +8,14 @@ from tools.search_tool import SearchTools
 from dotenv import load_dotenv
 load_dotenv()
 
+openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+groq_model = ChatGroq(temperature=0.5, groq_api_key=os.environ["GROQ_API_KEY"], model_name=os.environ["GROQ_MODEL_NAME"])
 
-# This is an example of how to define custom agents.
-# You can define as many agents as you want.
-# You can also define custom tasks in tasks.py
 class CustomAgents():
-    def __init__(self, openai:bool=True, agent_type:str="buisiness"):
+    def __init__(self, agent_type:str="buisiness", openai:bool=False):
         self.agent_type = agent_type
-        if openai:
-            self.model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
-        else:    
-            self.model = ChatGroq(temperature=0.5, groq_api_key=os.environ["GROQ_API_KEY"], model_name=os.environ["GROQ_MODEL_NAME"])
+        self.model = openai_model if openai else groq_model
+        print(f"Using {self.model.model_name} model for {self.agent_type} agents")
 
     def agent_1_name(self):
         return Agent(
@@ -54,6 +51,7 @@ class CustomAgents():
             # tools=[tool_1, tool_2],
             allow_delegation=True,
             verbose=True,
+            model=self.model,
             max_iter=30
         )
     
@@ -72,5 +70,6 @@ class CustomAgents():
                 each with pargraph long bullet points. You are able to TERMINATE the chain."""),
             tools=[SearchTools.search_internet, SearchTools.search_news],
             allow_delegation=True,
+            model=self.model,
             verbose=True
         )

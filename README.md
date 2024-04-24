@@ -20,12 +20,16 @@ To run the agents, run the following command:
 ```bash
 python main.py
 ```
-Make sure to have a stable internet connection to run the crew of agents.
+1. Make sure to have a stable internet connection to run the crew of agents.
+2. The user will be prompted to enter the topic they would like to research. (e.g. "Healthcare")
+3. The user will then be prompted to ask the question they would like to research. (e.g. "Write me a papaer summarizing anxiety within children?")
+4. The agents will then output the final research summary on the user's specified topic.
 
 ### Large Language Model Selection
-The user can select the large language model to use for the agents by changing the `model` variable in the `main.py` file. The user can choose between the following models:
-1. `openai-gpt`: OpenAI's GPT model.
+The user can select the large language model to use for the agents by changing updating the environment variables in the `main.py`. The user can choose between the following models:
+1. `openai`: OpenAI's GPT model.
 2. `groq`: Groq's large language model.
+3. Or use their own custom models by updating the `os.environ["OPENAI_API_BASE"]` variable.
 
 ## Output
 The agents will output the final research summary on the user's specified topic.
