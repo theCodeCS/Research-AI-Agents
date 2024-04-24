@@ -8,7 +8,7 @@ class SearchTools():
   def search_internet(query):
     """Useful to search the internet 
     about a a given topic and return relevant results"""
-    top_result_to_return = 4
+    top_result_to_return = 10
     url = "https://google.serper.dev/search"
     payload = json.dumps({"q": query})
     headers = {
@@ -33,7 +33,7 @@ class SearchTools():
   def search_news(query):
     """Useful to search news about a company, stock or any other
     topic and return relevant results"""""
-    top_result_to_return = 4
+    top_result_to_return = 10
     url = "https://google.serper.dev/news"
     payload = json.dumps({"q": query})
     headers = {

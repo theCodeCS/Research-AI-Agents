@@ -5,6 +5,9 @@ from textwrap import dedent
 from agents import CustomAgents
 from tasks import CustomTasks
 
+from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -17,16 +20,19 @@ load_dotenv()
 # os.environ["OPENAI_MODEL_NAME"] = 'gpt-4-turbo'
 # os.environ["OPENAI_API_KEY"] = 'sk-1ZQ6'
 
+openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+# groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+
+
 
 class CustomCrew:
-    def __init__(self, topic:str, task:str, openai:bool):
+    def __init__(self, topic:str, task:str):
         self.topic = topic
         self.task = task
-        self.openai = openai
 
     def run(self):
         # Define your custom agents and tasks in agents.py and tasks.py
-        agents = CustomAgents(self.topic, self.openai)
+        agents = CustomAgents(self.topic)
         tasks = CustomTasks(self.task)
 
         # Define your custom agents and tasks here
@@ -61,11 +67,10 @@ class CustomCrew:
 if __name__ == "__main__":
     print("## Welcome to Crew AI Template")
     print("-------------------------------")
-    openai = True if input(dedent("""Which Model do you want to use? (openai/groq): """)) == "openai" else False
     topic = input(dedent("""What is the Topic you want me to Research about?: """))
     task = input(dedent("""Ask Me what you want me to find: """))
 
-    custom_crew = CustomCrew(topic, task, openai)
+    custom_crew = CustomCrew(topic, task)
     result = custom_crew.run()
     print("\n\n########################")
     print("## Here is you custom crew run result:")
