@@ -71,3 +71,7 @@ if __name__ == "__main__":
     print("## Here is you custom crew run result:")
     print("########################\n")
     print(result)
+    # Create a markdown document with the result
+    with open('../results/result.md', 'w') as file:
+        file.write(result)
+    print("Result saved as result.md")

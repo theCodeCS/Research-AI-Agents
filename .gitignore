@@ -12,3 +12,6 @@
 
 # Ignore .idea files
 .idea
+
+# Ignore results folder
+results/*
