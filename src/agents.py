@@ -13,8 +13,8 @@ load_dotenv()
 # You can define as many agents as you want.
 # You can also define custom tasks in tasks.py
 class CustomAgents():
-    def __init__(self, openai=True, agent_type:str="buisiness"):
-        self.agent_type: str = agent_type
+    def __init__(self, openai:bool=True, agent_type:str="buisiness"):
+        self.agent_type = agent_type
         if openai:
             self.model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
         else:    
