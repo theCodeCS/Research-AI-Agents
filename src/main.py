@@ -20,8 +20,8 @@ load_dotenv()
 # os.environ["OPENAI_MODEL_NAME"] = 'gpt-4-turbo'
 # os.environ["OPENAI_API_KEY"] = 'sk-1ZQ6'
 
-openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
-# groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+# openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
 
 
 
@@ -33,7 +33,7 @@ class CustomCrew:
     def run(self):
         # Define your custom agents and tasks in agents.py and tasks.py
         agents = CustomAgents(self.topic)
-        tasks = CustomTasks(self.task)
+        tasks = CustomTasks(self.task, self.topic)
 
         # Define your custom agents and tasks here
         custom_agent_1 = agents.agent_1_name()
@@ -56,7 +56,7 @@ class CustomCrew:
         crew = Crew(
             agents=[custom_agent_1, custom_agent_2, custom_agent_3],
             tasks=[custom_task_1, custom_task_2, custom_task_3],
-            verbose=True
+            verbose=2
         )
 
         result = crew.kickoff()

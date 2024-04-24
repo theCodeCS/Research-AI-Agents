@@ -4,17 +4,30 @@ from textwrap import dedent
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from tools.search_tool import SearchTools
+from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_community.tools import DuckDuckGoSearchResults
+from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
+
+# More context on region and time parameters at https://pypi.org/project/duckduckgo-search/
+# wrapper = DuckDuckGoSearchAPIWrapper(region="us-en", time='d',max_results=10)
+# search_tool = DuckDuckGoSearchResults(api_wrapper=wrapper, source="news")
+
+search_tool = DuckDuckGoSearchRun()
 
 from dotenv import load_dotenv
 load_dotenv()
 
-openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
-# groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+# Initialize the agentops to view the agents in the browser
+import agentops
+agentops.init()
+
+# openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
 
 class CustomAgents():
     def __init__(self, agent_type:str="buisiness"):
         self.agent_type = agent_type
-        self.model = openai_model
+        self.model = groq_model
         print(f"Using {self.model.model_name} model for {self.agent_type} agents")
 
     def agent_1_name(self):
@@ -28,7 +41,7 @@ class CustomAgents():
                 You are very detailed in researching {self.agent_type} strategies and developing {self.agent_type} solutions.
                 You final answer should be atleast a 2 page research report style on {self.agent_type} and should consists of headers and subheaders
                 each with pargraph long bullet points. You are unable to TERMINATE the chain."""),
-            tools=[SearchTools.search_internet, SearchTools.search_news],
+            tools=[search_tool],
             allow_delegation=False,
             memory=True,
             verbose=True,
@@ -71,7 +84,7 @@ class CustomAgents():
                 To ensure that the final report is accurate and of high quality, you will need to fact-check by cross-referencing the information
                 using the tools provided. Your final answer should expand on the topic of {self.agent_type} into a 2 page research report style and should 
                 consists of headers and subheaders each with pargraph long bullet points. You are able to TERMINATE the chain."""),
-            tools=[SearchTools.search_internet, SearchTools.search_news],
+            tools=[search_tool],
             allow_delegation=True,
             memory=True,
             model=self.model,
