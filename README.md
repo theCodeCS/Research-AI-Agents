@@ -1,6 +1,6 @@
 # Research-AI-Agents
 
-<h3>Try Out the Researcher Agents:  https://ai-research-agents.streamlit.app/ </h3>
+<h3>[<a href='https://ai-research-agents.streamlit.app/'> Link </a>] 🤖<a href='https://ai-research-agents.streamlit.app/'> Try Out the Researcher Agents </a> </h3>
 
 ## Introduction
 This repository hosts custom large language models from OpenAI and Groq, as well as Crew AI agents, which utilize the Serper API to scrape and query web information related to topics specified by the user. These agents are developed in Python and are designed to execute a series of tasks efficiently:
