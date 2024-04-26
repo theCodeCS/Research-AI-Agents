@@ -20,10 +20,6 @@ load_dotenv()
 # os.environ["OPENAI_MODEL_NAME"] = 'gpt-4-turbo'
 # os.environ["OPENAI_API_KEY"] = 'sk-1ZQ6'
 
-# openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
-groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
-
-
 
 class CustomCrew:
     def __init__(self, topic:str, task:str):
@@ -37,26 +33,23 @@ class CustomCrew:
 
         # Define your custom agents and tasks here
         custom_agent_1 = agents.agent_1_name()
-        custom_agent_2 = agents.agent_2_name()
-        custom_agent_3 = agents.agent_3_name()
+        # custom_agent_2 = agents.agent_2_name()
 
         # Custom tasks include agent name and variables as input
         custom_task_1 = tasks.research(
             custom_agent_1
         )
 
-        custom_task_2 = tasks.write_report(
-            custom_agent_2,
-        )
-        custom_task_3 = tasks.summary_and_briefing_task(
-            custom_agent_3,
-        )
+        # custom_task_2 = tasks.write_report(
+        #     custom_agent_2,
+        # )
+
 
         # Define your custom crew here
         crew = Crew(
-            agents=[custom_agent_1, custom_agent_2, custom_agent_3],
-            tasks=[custom_task_1, custom_task_2, custom_task_3],
-            verbose=2
+            agents=[custom_agent_1],
+            tasks=[custom_task_1],
+            verbose=True
         )
 
         result = crew.kickoff()
@@ -65,18 +58,26 @@ class CustomCrew:
 
 # This is the main function that you will use to run your custom crew.
 if __name__ == "__main__":
-    print("## Welcome to Crew AI Template")
-    print("-------------------------------")
-    topic = input(dedent("""What is the Topic you want me to Research about?: """))
-    task = input(dedent("""Ask Me what you want me to find: """))
+    try:
+        # Ask for user input
+        print("## Welcome to Crew AI Research Assistant. ##")
+        print("-------------------------------")
+        topic = input(dedent("""What is the Topic you want me to Research about?: """))
+        task = input(dedent("""Ask Me what you want me to find: """))
 
-    custom_crew = CustomCrew(topic, task)
-    result = custom_crew.run()
-    print("\n\n########################")
-    print("## Here is you custom crew run result:")
-    print("########################\n")
-    print(result)
-    # Create a markdown document with the result
-    with open('../results/result.md', 'w') as file:
-        file.write(result)
-    print("Result saved as result.md")
+        # Start custom crew
+        custom_crew = CustomCrew(topic, task)
+        result = custom_crew.run()
+        print("\n\n########################")
+        print("## Here is you custom crew run result:")
+        print("########################\n")
+        print(result)
+
+        # Create a markdown document with the result
+        with open('../results/result.md', 'w') as file:
+            file.write(result)
+        print("Result saved as result.md")
+
+    except Exception as e:
+        print(f"An error occured: {e}")
+        print("Please check your environment variables and try again.")

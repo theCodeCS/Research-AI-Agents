@@ -7,12 +7,13 @@ from tools.search_tool import SearchTools
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
+from tools.search_tool import SearchTools
 
 # More context on region and time parameters at https://pypi.org/project/duckduckgo-search/
 # wrapper = DuckDuckGoSearchAPIWrapper(region="us-en", time='d',max_results=10)
 # search_tool = DuckDuckGoSearchResults(api_wrapper=wrapper, source="news")
 
-search_tool = DuckDuckGoSearchRun()
+# search_tool = DuckDuckGoSearchRun()
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -21,13 +22,13 @@ load_dotenv()
 import agentops
 agentops.init()
 
-# openai_model = ChatOpenAI(temperature=0.5, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
-groq_model = ChatGroq(temperature=0.3, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+# model = ChatOpenAI(temperature=0.3, openai_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
+model = ChatGroq(temperature=0.5, groq_api_key=os.environ["OPENAI_API_KEY"], model_name=os.environ["OPENAI_MODEL_NAME"])
 
 class CustomAgents():
     def __init__(self, agent_type:str="buisiness"):
         self.agent_type = agent_type
-        self.model = groq_model
+        self.model = model
         print(f"Using {self.model.model_name} model for {self.agent_type} agents")
 
     def agent_1_name(self):
@@ -38,15 +39,12 @@ class CustomAgents():
                 You will use the most up to date research tools and techniques to gather and analyze data on the {self.agent_type} industry.
                 You are known for your ability to think critically and solve complex problems without fault."""),
             goal=dedent("""\
-                You are very detailed in researching {self.agent_type} strategies and developing {self.agent_type} solutions.
                 You final answer should be atleast a 2 page research report style on {self.agent_type} and should consists of headers and subheaders
                 each with pargraph long bullet points. You are unable to TERMINATE the chain."""),
-            tools=[search_tool],
+            tools=[SearchTools.search_internet, SearchTools.search_news],
             allow_delegation=False,
-            memory=True,
             verbose=True,
-            model=self.model,
-            max_iter=30
+            model=self.model
         )
 
     def agent_2_name(self):
@@ -54,39 +52,13 @@ class CustomAgents():
             role=f"Senior {self.agent_type} Writer",
             backstory=dedent(f"""\
                 You are a Senior {self.agent_type} Writer at a top-tier research firm.
-                You will work with the information from the Senior {self.agent_type} Researcher to write a structured report
-                suited for a {self.agent_type} audience. You have written numerous articles, reports, and whitepapers on a variety of topics.
-                You are known for your ability to write clearly, elaborately, and in-depth, while presenting complex information 
+                You are experienced in writing clearly, elaborately, and in-depth, while presenting complex information 
                 in a way that is easy to understand. You write in a professional tone and use proper grammar and punctuation."""),
             goal=dedent(f"""\
                 Create a report that is clear, concise, and easy to understand for a {self.agent_type} audience.
-                You final answer should be atleast a 2 page research report style and should consists of headers and subheaders
-                each with pargraph long bullet points. You are unable to TERMINATE the chain."""),
+                You are able to TERMINATE the chain."""),
             # tools=[tool_1, tool_2],
             allow_delegation=True,
-            memory=True,
             verbose=True,
-            model=self.model,
-            max_iter=30
-        )
-    
-    def agent_3_name(self):
-        return Agent(
-            role=f"Managerial {self.agent_type} Lead and Fact Checker",
-            backstory=dedent(f"""\
-                You are a Managerial {self.agent_type} Lead and Fact Checker at a top-tier research firm.
-                You will work with the information from the Senior {self.agent_type} Researcher and the Senior {self.agent_type} Writer to
-                fact-check and ensure the quality of the final report. If there are issues, you delagate the tasks back to the Senior {self.agent_type} Researcher
-                or the Senior {self.agent_type} Writer to ensure validity. You are known for your attention to detail and 
-                your ability to spot errors and inconsistencies in written work."""),
-            goal=dedent(f"""\
-                Manage the team and ensure that the final report is accurate and of high quality for a {self.agent_type} audience.
-                To ensure that the final report is accurate and of high quality, you will need to fact-check by cross-referencing the information
-                using the tools provided. Your final answer should expand on the topic of {self.agent_type} into a 2 page research report style and should 
-                consists of headers and subheaders each with pargraph long bullet points. You are able to TERMINATE the chain."""),
-            tools=[search_tool],
-            allow_delegation=True,
-            memory=True,
-            model=self.model,
-            verbose=True
+            model=self.model
         )

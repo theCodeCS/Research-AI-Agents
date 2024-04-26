@@ -1,12 +1,12 @@
 # Research-AI-Agents
 
 ## Introduction
-This repository contains custom large language models (Open AI / Groq for Open source models) and Crew AI agents utilizing the Serper to scrape and query information on the user's specified topic on the web. The agents are built using Python and Serper API. The agents are capable of performing the following tasks:
+This repository hosts custom large language models from OpenAI and Groq, as well as Crew AI agents, which utilize the Serper API to scrape and query web information related to topics specified by the user. These agents are developed in Python and are designed to execute a series of tasks efficiently:
 
-1. Search for the top 4 search results on the user's specified topic and return the summary of the search results.
-2. The research agent will search and query the web then create a research summary on the user's specified topic.
-3. The writer agent will then correct grammatical errors in the research agent's summary.
-4. Finally the Managerial Lead agent will vet and summarize the research agent's summary and the writer agent's corrected summary, then output the final research summary on the user's specified topic back to the user.
+1. They search for the top 10 results related to the specified topic and provide a concise summary of these results.
+2. The research agent delves deeper by searching and querying the web to compile a detailed summary on the chosen topic.
+3. Subsequently, the writer agent reviews the research summary to correct any grammatical errors.
+4. Finally, the Managerial Lead agent evaluates and synthesizes both the research and the corrected summaries, producing a final polished research summary that is then delivered back to the user.
 
 
 ## Installation
@@ -29,7 +29,7 @@ python main.py
 The user can select the large language model to use for the agents by changing updating the environment variables in the `main.py`. The user can choose between the following models:
 1. `openai`: OpenAI's GPT model.
 2. `groq`: Groq's large language model.
-3. Or use their own custom models by updating the `os.environ["OPENAI_API_BASE"]` variable.
+3. `custom`: Can use own custom models by updating the `os.environ["OPENAI_API_BASE"]` variable.
 
 ## Output
 The agents will output the final research summary on the user's specified topic.
