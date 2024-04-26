@@ -12,8 +12,8 @@ from main import CustomCrew
 
 st.title("Your Personal Team of Research Assistants.")
 
-st.text_input("What is the Topic you want me to Research about?:", key="topic", value="business")
-st.text_input("Ask Me what you want me to find:", key="task", value="research the {agent_type} industry.")
+st.text_input("What is the Topic you want me to Research about?:", key="topic", placeholder="business")
+st.text_input("Ask Me what you want me to find:", key="task", placeholder="What is the current state of the business industry?")
 
 if st.button("Run Crew AI Research Assistant!"):
     # Start custom crew
