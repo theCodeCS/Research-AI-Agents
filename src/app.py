@@ -1,8 +1,8 @@
 ### Necessary imports for Streamlit Cloud Deployment to work ###
 
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 ################################################################
 
@@ -36,7 +36,7 @@ def start_custom_crew(task):
     custom_crew = CustomCrew(st.session_state["topic"], task)
     with st.spinner('Chillin, just searching the web for ya...'):
         result = custom_crew.run()
-    return result
+        return result
 
 prompt = st.chat_input("Run Crew AI Research Assistants!", key="run")
 
